@@ -1,5 +1,5 @@
 import { BoardColumn } from './components/BoardColumn';
-import useBoardStore from './store/useBoardStore';
+import useBoardStore from './hooks/useBoardStore';
 
 const KanbanBoard = () => {
   const { columns } = useBoardStore();

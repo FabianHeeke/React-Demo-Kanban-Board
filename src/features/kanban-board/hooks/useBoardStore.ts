@@ -8,6 +8,7 @@ interface BoardState {
 
 const defaultTasks: Task[] = [
   {
+    id: 101,
     title: 'Design UI',
     description: 'Create wireframes and mockups for the new feature.',
     priority: 1,
@@ -15,6 +16,7 @@ const defaultTasks: Task[] = [
     lastModifiedDate: new Date('2026-01-01T09:00:00Z'),
   },
   {
+    id: 102,
     title: 'Set up backend',
     description: 'Initialize the backend project and database.',
     priority: 2,
@@ -22,6 +24,7 @@ const defaultTasks: Task[] = [
     lastModifiedDate: new Date('2026-01-02T10:00:00Z'),
   },
   {
+    id: 103,
     title: 'Write documentation',
     description: 'Document the API endpoints and usage.',
     priority: 3,

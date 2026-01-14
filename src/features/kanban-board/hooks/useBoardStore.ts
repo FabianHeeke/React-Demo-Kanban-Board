@@ -2,8 +2,15 @@ import { create } from 'zustand';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
 
+type MoveTaskToColumnProps = {
+  draggedTask: Task;
+  sourceColumnId: number;
+  targetColumnId: number;
+};
+
 interface BoardState {
   columns: Column[];
+  moveTaskToColumn: ({}: MoveTaskToColumnProps) => void;
 }
 
 const defaultTasks: Task[] = [
@@ -39,9 +46,31 @@ const columns: Column[] = [
   { id: 3, name: 'Done', tasks: [defaultTasks[2]] },
 ];
 
-const useBoardStore = create<BoardState>(() => ({
+const useBoardStore = create<BoardState>((set) => ({
   columns: columns,
-  tasks: [],
+  moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
+    set((state) => {
+      const columns = [...state.columns]; // shallow copy for mutatio
+
+      const sourceColumn = columns.find(
+        (column) => column.id === sourceColumnId
+      );
+      const targetColumn = columns.find(
+        (column) => column.id === targetColumnId
+      );
+
+      if (!sourceColumn || !targetColumn) {
+        return state;
+      }
+
+      sourceColumn.tasks = sourceColumn.tasks.filter(
+        (task) => task.id !== draggedTask.id
+      );
+      targetColumn.tasks.push(draggedTask);
+
+      return { columns };
+    });
+  },
 }));
 
 export default useBoardStore;

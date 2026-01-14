@@ -1,16 +1,23 @@
 import { BoardColumn } from './components/BoardColumn';
+import useTaskCardDrag from './hooks/useTaskCardDrag';
 import useBoardStore from './hooks/useBoardStore';
+import { DndContext } from '@dnd-kit/core';
 
 const KanbanBoard = () => {
   const { columns } = useBoardStore();
+
+  const { onCardDragEnd } = useTaskCardDrag();
+
   return (
-    <div className="p-8">
-      <div className="flex h-full max-h-screen min-h-[50vh] gap-4 overflow-x-auto bg-gray-50">
-        {columns.map((column, index) => (
-          <BoardColumn key={index} column={column} />
-        ))}
+    <DndContext onDragEnd={onCardDragEnd}>
+      <div className="p-8">
+        <div className="flex h-full max-h-screen min-h-[50vh] justify-center gap-4">
+          {columns.map((column, index) => (
+            <BoardColumn key={index} column={column} />
+          ))}
+        </div>
       </div>
-    </div>
+    </DndContext>
   );
 };
 

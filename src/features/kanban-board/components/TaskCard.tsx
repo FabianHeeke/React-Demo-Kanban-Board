@@ -1,25 +1,39 @@
 import Task from '../interfaces/Task.interface';
 import classnames from 'classnames';
+import { useDraggable } from '@dnd-kit/core';
 
 interface TaskCardProps {
   task: Task;
+  columnId: number;
 }
 
-export const TaskCard = ({ task }: TaskCardProps) => {
+export const TaskCard = ({ task, columnId }: TaskCardProps) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task.id,
+    data: { task: task, parentColumnId: columnId },
+  });
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
   return (
-    <div
-      className={classnames(
-        'cursor-pointer rounded p-2 transition-all ease-in-out hover:scale-105 hover:shadow-md',
-        {
-          'bg-red-400': task.priority === 1,
-          'bg-orange-300': task.priority === 2,
-          'bg-blue-300': task.priority === 3,
-        }
-      )}
-    >
-      <div className="flex flex-col gap-1">
-        <h3 className="text-sm font-semibold">{task.title}</h3>
-        <p className="truncate text-xs text-ellipsis">{task.description}</p>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      <div
+        className={classnames(
+          'cursor-pointer touch-none rounded p-2 transition-all ease-in-out hover:scale-105 hover:shadow-md',
+          {
+            'bg-red-400': task.priority === 1,
+            'bg-orange-300': task.priority === 2,
+            'bg-blue-300': task.priority === 3,
+          }
+        )}
+      >
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-semibold">{task.title}</h3>
+          <p className="truncate text-xs text-ellipsis">{task.description}</p>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layout/header';
+import Header from '@/components/layout/Header';
 import KanbanBoard from '@/features/kanban-board/KanbanBoard';
 import classnames from 'classnames';
 

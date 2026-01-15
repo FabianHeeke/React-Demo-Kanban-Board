@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <>
       <Header />
-      <KanbanBoard />
+      <div className="relative mx-auto max-w-4xl">
+        <KanbanBoard />
+      </div>
     </>
   );
 }

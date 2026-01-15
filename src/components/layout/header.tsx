@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import { FaGithub } from 'react-icons/fa';
 import { IoIosSettings } from 'react-icons/io';
 import KanbanIcon from '../ui/KanbanIcon';
+import KanbanButton from '../ui/KanbanButton';
 
 interface HeaderProps {
   maxContentWidthClassName: string;
@@ -16,10 +17,10 @@ const Header = ({ maxContentWidthClassName }: HeaderProps) => {
           maxContentWidthClassName
         )}
       >
-        <button className="flex cursor-pointer items-center gap-2 rounded border border-black p-2">
-          Projekt auf GitHub
-          <KanbanIcon icon={FaGithub} />
-        </button>
+        <KanbanButton>
+          <span>Projekt auf GitHub</span>
+          <KanbanIcon icon={FaGithub} size={18} />
+        </KanbanButton>
         <KanbanIcon icon={IoIosSettings} />
       </div>
     </div>

@@ -4,7 +4,7 @@ import KanbanBoard from '@/features/kanban-board/KanbanBoard';
 import classnames from 'classnames';
 
 export default function Home() {
-  const maxContentWidthClassName = 'max-w-4xl';
+  const maxContentWidthClassName = 'max-w-4xl px-4';
   return (
     <>
       <Header maxContentWidthClassName={maxContentWidthClassName} />

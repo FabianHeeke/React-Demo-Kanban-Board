@@ -1,3 +1,4 @@
+'use client';
 import { BoardColumn } from './components/BoardColumn';
 import useTaskCardDrag from './hooks/useTaskCardDrag';
 import useBoardStore from './hooks/useBoardStore';

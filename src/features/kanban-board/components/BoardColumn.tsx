@@ -11,9 +11,6 @@ export const BoardColumn = ({ column }: BoardColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,
   });
-  const styleDrop = {
-    background: isOver ? '' : undefined,
-  };
 
   const _renderTasks = () => {
     if (column.tasks.length === 0) {
@@ -37,7 +34,6 @@ export const BoardColumn = ({ column }: BoardColumnProps) => {
   return (
     <div
       ref={setNodeRef}
-      style={styleDrop}
       className={classnames(
         'flex w-72 flex-col rounded-lg border border-black p-4',
         { 'bg-gray-50': isOver }

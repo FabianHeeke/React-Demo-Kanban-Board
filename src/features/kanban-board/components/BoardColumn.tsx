@@ -2,12 +2,19 @@ import Column from '../interfaces/Column.interface';
 import { TaskCard } from './TaskCard';
 import classnames from 'classnames';
 import { useDroppable } from '@dnd-kit/core';
+import Task from '../interfaces/Task.interface';
 
 interface BoardColumnProps {
   column: Column;
+  onEditTask: (task: Task) => void;
+  onDeleteTask: (taskId: number) => void;
 }
 
-export const BoardColumn = ({ column }: BoardColumnProps) => {
+export const BoardColumn = ({
+  column,
+  onEditTask,
+  onDeleteTask,
+}: BoardColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,
   });
@@ -25,6 +32,8 @@ export const BoardColumn = ({ column }: BoardColumnProps) => {
             key={`task-${column.id}-${index}`}
             task={task}
             columnId={column.id}
+            onEdit={onEditTask}
+            onDelete={onDeleteTask}
           />
         ))}
       </>

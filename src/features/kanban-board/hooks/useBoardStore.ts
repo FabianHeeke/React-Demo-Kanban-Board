@@ -15,6 +15,9 @@ interface BoardState {
   sortTaskOptions: TaskSortOptions;
   updateSortTaskOptions: (newSortOptions: TaskSortOptions) => void;
   moveTaskToColumn: ({}: MoveTaskToColumnProps) => void;
+  addTask: (task: Task, columnId: number) => void;
+  updateTask: (updatedTask: Task) => void;
+  deleteTask: (taskId: number) => void;
 }
 
 const defaultTasks: Task[] = [
@@ -110,6 +113,39 @@ const useBoardStore = create<BoardState>()(
           );
           targetColumn.tasks.push(draggedTask);
 
+          return { columns };
+        });
+      },
+      addTask: (task, columnId) => {
+        set((state) => {
+          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
+          const targetColumn = columns.find((col) => col.id === columnId);
+          if (targetColumn) {
+            targetColumn.tasks.push(task);
+          }
+          return { columns };
+        });
+      },
+      updateTask: (updatedTask) => {
+        set((state) => {
+          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
+          columns.forEach((column) => {
+            const taskIndex = column.tasks.findIndex(
+              (t) => t.id === updatedTask.id
+            );
+            if (taskIndex !== -1) {
+              column.tasks[taskIndex] = updatedTask;
+            }
+          });
+          return { columns };
+        });
+      },
+      deleteTask: (taskId) => {
+        set((state) => {
+          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
+          columns.forEach((column) => {
+            column.tasks = column.tasks.filter((t) => t.id !== taskId);
+          });
           return { columns };
         });
       },

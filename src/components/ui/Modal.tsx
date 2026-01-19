@@ -10,13 +10,14 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, title = '', children }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
+    // Cleanup, if modal is closed in another way
     return () => {
       document.body.style.overflow = 'unset';
     };

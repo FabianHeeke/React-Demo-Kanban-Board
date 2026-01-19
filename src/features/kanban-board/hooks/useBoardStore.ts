@@ -64,26 +64,28 @@ const useBoardStore = create<BoardState>()(
         set((state) => {
           const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation
 
-          const columsWithSortedTasks = columns.map((column) =>
+          columns.forEach((column) => {
             column.tasks.sort((taskA, taskB) => {
-              if (
-                newSortOptions.direction !== 'ASC' &&
-                newSortOptions.direction !== 'DESC'
-              ) {
-                throw new Error(
-                  `Invalid sort directon for tasks provided. Was ${newSortOptions.direction}, but should be "ASC" or "DESC"`
-                );
+              const fieldName = newSortOptions.field;
+              let valueA: number;
+              let valueB: number;
+
+              if (fieldName === 'creationDate') {
+                valueA = new Date(taskA[fieldName]).getTime();
+                valueB = new Date(taskB[fieldName]).getTime();
+              } else {
+                valueA = +taskA[fieldName];
+                valueB = +taskB[fieldName];
               }
 
-              const fieldName = newSortOptions.field;
               return newSortOptions.direction === 'ASC'
-                ? +taskA[fieldName] - +taskB[fieldName]
-                : +taskB[fieldName] - +taskA[fieldName];
-            })
-          );
+                ? valueA - valueB
+                : valueB - valueA;
+            });
+          });
 
           return {
-            colums: columsWithSortedTasks,
+            columns: columns,
             sortTaskOptions: newSortOptions,
           };
         });

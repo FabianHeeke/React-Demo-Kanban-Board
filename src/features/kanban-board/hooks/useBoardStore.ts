@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
+import { TaskSortOptions } from '../types/TaskSortOptions';
 
 type MoveTaskToColumnProps = {
   draggedTask: Task;
@@ -11,6 +12,7 @@ type MoveTaskToColumnProps = {
 
 interface BoardState {
   columns: Column[];
+  sortTaskOptions: TaskSortOptions;
   moveTaskToColumn: ({}: MoveTaskToColumnProps) => void;
 }
 
@@ -47,10 +49,16 @@ const columns: Column[] = [
   { id: 3, name: 'Done', tasks: [defaultTasks[2]] },
 ];
 
+const defaultTaskSortOptions: TaskSortOptions = {
+  field: 'creationDate',
+  direction: 'ASC',
+};
+
 const useBoardStore = create<BoardState>()(
   persist(
     (set) => ({
       columns: columns,
+      sortTaskOptions: defaultTaskSortOptions,
       moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
         set((state) => {
           const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation

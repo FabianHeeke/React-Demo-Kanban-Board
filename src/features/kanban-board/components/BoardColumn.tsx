@@ -7,14 +7,9 @@ import Task from '../interfaces/Task.interface';
 interface BoardColumnProps {
   column: Column;
   onEditTask: (task: Task) => void;
-  onDeleteTask: (taskId: number) => void;
 }
 
-export const BoardColumn = ({
-  column,
-  onEditTask,
-  onDeleteTask,
-}: BoardColumnProps) => {
+export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,
   });
@@ -33,7 +28,6 @@ export const BoardColumn = ({
             task={task}
             columnId={column.id}
             onEdit={onEditTask}
-            onDelete={onDeleteTask}
           />
         ))}
       </>

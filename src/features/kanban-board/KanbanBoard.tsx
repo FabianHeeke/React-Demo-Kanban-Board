@@ -17,7 +17,7 @@ import TaskModal from './components/TaskModal';
 import Task from './interfaces/Task.interface';
 
 const KanbanBoard = () => {
-  const { columns, deleteTask } = useBoardStore();
+  const { columns } = useBoardStore();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
@@ -63,7 +63,6 @@ const KanbanBoard = () => {
               key={index}
               column={column}
               onEditTask={handleEditTask}
-              onDeleteTask={deleteTask}
             />
           ))}
         </div>

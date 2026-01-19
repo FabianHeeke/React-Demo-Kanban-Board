@@ -69,6 +69,7 @@ const KanbanBoard = () => {
         </div>
       </DndContext>
       <TaskModal
+        key={editingTask ? editingTask.id : 'create'}
         isOpen={isCreateModalOpen || !!editingTask}
         onClose={handleCloseModal}
         taskToEdit={editingTask}

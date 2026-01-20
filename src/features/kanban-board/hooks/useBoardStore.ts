@@ -4,25 +4,21 @@ import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
 import { TaskSortOptions } from '../types/TaskSortOptions.type';
 
-type MoveTaskToColumnProps = {
-  draggedTask: Task;
-  sourceColumnId: number;
-  targetColumnId: number;
-};
-
 interface BoardState {
+  tasks: Task[];
   columns: Column[];
   sortTaskOptions: TaskSortOptions;
   updateSortTaskOptions: (newSortOptions: TaskSortOptions) => void;
-  moveTaskToColumn: ({}: MoveTaskToColumnProps) => void;
-  addTask: (task: Task, columnId: number) => void;
+  moveTaskToColumn: (draggedTask: Task, targetColumnId: Column['id']) => void;
+  addTask: (newTask: Task) => void;
   updateTask: (updatedTask: Task) => void;
-  deleteTask: (taskId: number) => void;
+  deleteTask: (deleteTaskId: number) => void;
 }
 
 const defaultTasks: Task[] = [
   {
     id: 101,
+    columnId: 1,
     title: 'Design UI',
     description: 'Create wireframes and mockups for the new feature.',
     priority: 1,
@@ -31,6 +27,7 @@ const defaultTasks: Task[] = [
   },
   {
     id: 102,
+    columnId: 1,
     title: 'Set up backend',
     description: 'Initialize the backend project and database.',
     priority: 2,
@@ -39,6 +36,7 @@ const defaultTasks: Task[] = [
   },
   {
     id: 103,
+    columnId: 3,
     title: 'Write documentation',
     description: 'Document the API endpoints and usage.',
     priority: 3,
@@ -48,9 +46,9 @@ const defaultTasks: Task[] = [
 ];
 
 const defaultColumns: Column[] = [
-  { id: 1, name: 'Todo', tasks: [defaultTasks[0], defaultTasks[1]] },
-  { id: 2, name: 'In progress', tasks: [] },
-  { id: 3, name: 'Done', tasks: [defaultTasks[2]] },
+  { id: 1, name: 'Todo' },
+  { id: 2, name: 'In progress' },
+  { id: 3, name: 'Done' },
 ];
 
 const defaultTaskSortOptions: TaskSortOptions = {
@@ -61,92 +59,47 @@ const defaultTaskSortOptions: TaskSortOptions = {
 const useBoardStore = create<BoardState>()(
   persist(
     (set) => ({
+      tasks: defaultTasks,
       columns: defaultColumns,
       sortTaskOptions: defaultTaskSortOptions,
       updateSortTaskOptions: (newSortOptions: TaskSortOptions) => {
-        set((state) => {
-          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation
-
-          columns.forEach((column) => {
-            column.tasks.sort((taskA, taskB) => {
-              const fieldName = newSortOptions.field;
-              let valueA: number;
-              let valueB: number;
-
-              if (fieldName === 'creationDate') {
-                valueA = new Date(taskA[fieldName]).getTime();
-                valueB = new Date(taskB[fieldName]).getTime();
-              } else {
-                valueA = +taskA[fieldName];
-                valueB = +taskB[fieldName];
-              }
-
-              return newSortOptions.direction === 'ASC'
-                ? valueA - valueB
-                : valueB - valueA;
-            });
-          });
-
+        set(() => {
           return {
-            columns: columns,
             sortTaskOptions: newSortOptions,
           };
         });
       },
-      moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
+      moveTaskToColumn: (draggedTask, targetColumnId) => {
         set((state) => {
-          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation
-
-          const sourceColumn = columns.find(
-            (column) => column.id === sourceColumnId
-          );
-          const targetColumn = columns.find(
-            (column) => column.id === targetColumnId
+          const tasks = state.tasks.map((task) =>
+            task.id === draggedTask.id
+              ? { ...task, columnId: targetColumnId }
+              : task
           );
 
-          if (!sourceColumn || !targetColumn) {
-            return state;
-          }
-
-          sourceColumn.tasks = sourceColumn.tasks.filter(
-            (task) => task.id !== draggedTask.id
-          );
-          targetColumn.tasks.push(draggedTask);
-
-          return { columns };
+          return {
+            tasks,
+          };
         });
       },
-      addTask: (task, columnId) => {
+      addTask: (newTask) => {
         set((state) => {
-          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
-          const targetColumn = columns.find((col) => col.id === columnId);
-          if (targetColumn) {
-            targetColumn.tasks.push(task);
-          }
-          return { columns };
+          return { tasks: [...state.tasks, newTask] };
         });
       },
       updateTask: (updatedTask) => {
         set((state) => {
-          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
-          columns.forEach((column) => {
-            const taskIndex = column.tasks.findIndex(
-              (t) => t.id === updatedTask.id
-            );
-            if (taskIndex !== -1) {
-              column.tasks[taskIndex] = updatedTask;
-            }
-          });
-          return { columns };
+          const tasks = state.tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task
+          );
+          return { tasks };
         });
       },
-      deleteTask: (taskId) => {
+      deleteTask: (deleteTaskId) => {
         set((state) => {
-          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[];
-          columns.forEach((column) => {
-            column.tasks = column.tasks.filter((t) => t.id !== taskId);
-          });
-          return { columns };
+          return {
+            tasks: state.tasks.filter((task) => task.id !== deleteTaskId),
+          };
         });
       },
     }),

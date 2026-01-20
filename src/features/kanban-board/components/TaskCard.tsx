@@ -4,14 +4,13 @@ import { useDraggable } from '@dnd-kit/core';
 
 interface TaskCardProps {
   task: Task;
-  columnId: number;
   onEdit: (task: Task) => void;
 }
 
-export const TaskCard = ({ task, columnId, onEdit }: TaskCardProps) => {
+export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
-    data: { task: task, parentColumnId: columnId },
+    data: { task: task },
   });
   const style = transform
     ? {

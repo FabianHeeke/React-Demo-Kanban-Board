@@ -8,7 +8,7 @@ import {
 } from '@dnd-kit/core';
 
 const useTaskCardDrag = () => {
-  const { moveTaskToColumn } = useBoardStore();
+  const moveTaskToColumn = useBoardStore((state) => state.moveTaskToColumn);
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

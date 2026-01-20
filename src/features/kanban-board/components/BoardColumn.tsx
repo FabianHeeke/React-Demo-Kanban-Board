@@ -11,7 +11,7 @@ interface BoardColumnProps {
 }
 
 export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
-  const { sortedTasksForColumn: tasks } = useColumnTasks(column.id);
+  const tasks = useColumnTasks(column.id);
 
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,

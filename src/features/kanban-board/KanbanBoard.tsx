@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { BoardColumn } from './components/BoardColumn';
 import useTaskCardDrag from './hooks/useTaskCardDrag';
 import useBoardStore from './hooks/useBoardStore';
@@ -11,20 +11,20 @@ import TaskModal from './components/TaskModal';
 import Task from './interfaces/Task.interface';
 
 const KanbanBoard = () => {
-  const { columns } = useBoardStore();
+  const columns = useBoardStore((state) => state.columns);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const { sensors, onCardDragEnd } = useTaskCardDrag();
 
-  const handleEditTask = (task: Task) => {
+  const handleEditTask = useCallback((task: Task) => {
     setEditingTask(task);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsCreateModalOpen(false);
     setEditingTask(null);
-  };
+  }, []);
 
   return (
     <div className="mt-8 flex max-w-full flex-col gap-4">

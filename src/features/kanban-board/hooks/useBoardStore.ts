@@ -9,7 +9,10 @@ interface BoardState {
   columns: Column[];
   sortTaskOptions: TaskSortOptions;
   updateSortTaskOptions: (newSortOptions: TaskSortOptions) => void;
-  moveTaskToColumn: (draggedTask: Task, targetColumnId: Column['id']) => void;
+  moveTaskToColumn: (
+    draggedTaskId: Task['id'],
+    targetColumnId: Column['id']
+  ) => void;
   addTask: (newTask: Task) => void;
   updateTask: (updatedTask: Task) => void;
   deleteTask: (deleteTaskId: number) => void;
@@ -69,10 +72,10 @@ const useBoardStore = create<BoardState>()(
           };
         });
       },
-      moveTaskToColumn: (draggedTask, targetColumnId) => {
+      moveTaskToColumn: (draggedTaskId, targetColumnId) => {
         set((state) => {
           const tasks = state.tasks.map((task) =>
-            task.id === draggedTask.id
+            task.id === draggedTaskId
               ? { ...task, columnId: targetColumnId }
               : task
           );

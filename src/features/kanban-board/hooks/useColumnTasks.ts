@@ -12,13 +12,13 @@ const useColumnTasks = (columnId: number): Task[] => {
       const { field, direction } = state.sortTaskOptions;
       return [...tasksInColumn].sort((a, b) => {
         if (field === 'creationDate') {
-          return direction === 'ASC'
+          return direction === 'DESC'
             ? a.creationDate.localeCompare(b.creationDate)
             : b.creationDate.localeCompare(a.creationDate);
         } else {
           const valueA = Number(a[field]);
           const valueB = Number(b[field]);
-          return direction === 'ASC' ? valueA - valueB : valueB - valueA;
+          return direction === 'DESC' ? valueA - valueB : valueB - valueA;
         }
       });
     },

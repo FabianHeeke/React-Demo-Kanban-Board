@@ -6,7 +6,7 @@ function App() {
   const maxContentWidthClassName = 'max-w-4xl px-4';
 
   return (
-    <div className="bg-custom-off-white grid min-h-screen min-w-screen grid-rows-[auto_1fr]">
+    <div className="bg-custom-light grid min-h-screen min-w-screen grid-rows-[auto_1fr]">
       <Header maxContentWidthClassName={maxContentWidthClassName} />
       <div
         className={classnames(

@@ -13,10 +13,8 @@ const Header = ({ maxContentWidthClassName }: HeaderProps) => {
           maxContentWidthClassName
         )}
       >
-        <p className="text-custom-off-white">{'Das Projekt auf GitHub >'}</p>
-        <h1 className="text-custom-off-white flex items-center">
-          Kanban-Board
-        </h1>
+        <p className="text-custom-light">{'Das Projekt auf GitHub >'}</p>
+        <h1 className="text-custom-light flex items-center">Kanban-Board</h1>
       </div>
     </div>
   );

@@ -108,12 +108,12 @@ const useBoardStore = create<BoardState>()(
     }),
     {
       name: 'kanban-storage',
-      storage: createJSONStorage(() => {
-        // Make sure localstorage is not tried to be accessed while running on the server
-        return typeof window !== 'undefined'
-          ? localStorage
-          : (undefined as unknown as Storage);
-      }),
+      // storage: createJSONStorage(() => {
+      //   // Make sure localstorage is not tried to be accessed while running on the server
+      //   return typeof window !== 'undefined'
+      //     ? localStorage
+      //     : (undefined as unknown as Storage);
+      // }),
     }
   )
 );

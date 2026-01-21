@@ -1,8 +1,4 @@
 import classnames from 'classnames';
-import { FaGithub } from 'react-icons/fa';
-import { IoIosSettings } from 'react-icons/io';
-import KanbanIcon from '../ui/KanbanIcon';
-import KanbanButton from '../ui/KanbanButton';
 
 interface HeaderProps {
   maxContentWidthClassName: string;

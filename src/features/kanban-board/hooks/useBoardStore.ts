@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
 import { TaskSortOptions } from '../types/TaskSortOptions.type';
@@ -49,7 +49,7 @@ const defaultTasks: Task[] = [
 ];
 
 const defaultColumns: Column[] = [
-  { id: 1, name: 'Todo' },
+  { id: 1, name: 'To do' },
   { id: 2, name: 'In progress' },
   { id: 3, name: 'Done' },
 ];
@@ -108,12 +108,6 @@ const useBoardStore = create<BoardState>()(
     }),
     {
       name: 'kanban-storage',
-      // storage: createJSONStorage(() => {
-      //   // Make sure localstorage is not tried to be accessed while running on the server
-      //   return typeof window !== 'undefined'
-      //     ? localStorage
-      //     : (undefined as unknown as Storage);
-      // }),
     }
   )
 );

@@ -18,17 +18,20 @@ export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
   });
 
   return (
-    <div
-      ref={setNodeRef}
-      className={classnames(
-        'flex w-72 flex-col rounded-lg border border-black p-4',
-        { 'bg-gray-50': isOver }
-      )}
-    >
-      <h3 className="mb-4 font-bold">{column.name}</h3>
+    <div ref={setNodeRef} className={classnames('flex w-72 flex-col p-4')}>
+      <div className="mb-6 flex items-center gap-2">
+        <h2
+          className={classnames('text-custom-dark capitalize', {
+            'font-bold underline': isOver,
+          })}
+        >
+          {column.name}
+        </h2>
+        <p className="text-custom-dark text-md opacity-50">{tasks.length}</p>
+      </div>
       <div className="flex flex-col gap-2">
         {tasks.length === 0 ? (
-          <div className="text-sm text-gray-500 italic">No tasks</div>
+          <div className="text-custom-dark text-sm">-</div>
         ) : (
           <>
             {tasks.map((task) => (

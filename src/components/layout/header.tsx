@@ -6,16 +6,18 @@ interface HeaderProps {
 
 const Header = ({ maxContentWidthClassName }: HeaderProps) => {
   return (
-    <div className="bg-custom-dark grid h-20 w-full grid-cols-[1fr_auto_1fr]">
+    <div className="bg-custom-dark flex h-20 w-full justify-center">
       <div
         className={classnames(
-          'flex h-full items-center',
+          'grid w-full grid-cols-[1fr_auto_1fr] items-center',
           maxContentWidthClassName
         )}
       >
         <p className="text-custom-off-white">{'Das Projekt auf GitHub >'}</p>
+        <h1 className="text-custom-off-white flex items-center">
+          Kanban-Board
+        </h1>
       </div>
-      <h1 className="text-custom-off-white flex items-center">Kanban-Board</h1>
     </div>
   );
 };

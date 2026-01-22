@@ -64,7 +64,7 @@ const KanbanSelect = ({
                   <KanbanIcon
                     icon={prefixIcon}
                     size={15}
-                    customClass="invisible"
+                    className="invisible"
                   />
                 )}
                 <p

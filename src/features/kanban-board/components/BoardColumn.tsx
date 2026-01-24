@@ -3,7 +3,7 @@ import { TaskCard } from './TaskCard';
 import classnames from 'classnames';
 import { useDroppable } from '@dnd-kit/core';
 import Task from '../interfaces/Task.interface';
-import useColumnTasks from '../hooks/useColumnTasks';
+import useSortedColumnTasks from '../hooks/useSortedColumnTasks';
 
 interface BoardColumnProps {
   column: Column;
@@ -11,7 +11,7 @@ interface BoardColumnProps {
 }
 
 export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
-  const tasks = useColumnTasks(column.id);
+  const tasks = useSortedColumnTasks(column.id);
 
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,

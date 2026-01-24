@@ -1,5 +1,5 @@
 import { KanbanSelectOption } from '@/features/kanban-board/types/KanbanSelectOption.type';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import classnames from 'classnames';
 import KanbanIcon from './KanbanIcon';
 import { FaCheck } from 'react-icons/fa6';
@@ -15,14 +15,11 @@ const KanbanSelect = ({ options, onValueSelect }: KanbanSelectProps) => {
   );
   const [isSelectDropdownVisible, setIsSelectDropdownVisible] = useState(false);
 
-  const handleValueSelect = useCallback(
-    (selectedOption: KanbanSelectOption) => {
-      setIsSelectDropdownVisible(false);
-      setSelectedOption(selectedOption);
-      onValueSelect(selectedOption.value);
-    },
-    []
-  );
+  const handleValueSelect = (selectedOption: KanbanSelectOption) => {
+    setIsSelectDropdownVisible(false);
+    setSelectedOption(selectedOption);
+    onValueSelect(selectedOption.value);
+  };
 
   return (
     <div className="relative">

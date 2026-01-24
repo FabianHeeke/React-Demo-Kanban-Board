@@ -35,7 +35,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
         <div className="flex justify-between">
           <p className="text-2xs">{formatDate(new Date(task.creationDate))}</p>
           <p className="text-xs font-bold">
-            {[...Array(4 - task.priority)].map(() => (
+            {[...Array(task.priority)].map(() => (
               <span>!</span>
             ))}
           </p>

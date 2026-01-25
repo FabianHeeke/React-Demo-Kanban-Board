@@ -1,41 +1,40 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { BoardColumn } from './components/BoardColumn';
 import useTaskCardDrag from './hooks/useTaskCardDrag';
 import useBoardStore from './hooks/useBoardStore';
 import { DndContext } from '@dnd-kit/core';
-import { FaPlus } from 'react-icons/fa6';
-import KanbanIcon from '@/components/ui/KanbanIcon';
 import SortControls from './components/SortControls';
 import TaskModal from './components/TaskModal';
 import Task from './interfaces/Task.interface';
 
 const KanbanBoard = () => {
   const columns = useBoardStore((state) => state.columns);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const [createTaskParams, setCreateTaskParams] =
+    useState<Partial<Task> | null>(null);
   const { sensors, onCardDragEnd } = useTaskCardDrag();
 
-  const handleEditTask = useCallback((task: Task) => {
-    setEditingTask(task);
-  }, []);
+  const handleEditTask = (task: Task) => {
+    setTaskToEdit(task);
+    setIsTaskModalOpen(true);
+  };
 
-  const handleCloseModal = useCallback(() => {
-    setIsCreateModalOpen(false);
-    setEditingTask(null);
-  }, []);
+  const handleCreateTask = (createTaskParams: Partial<Task>) => {
+    setCreateTaskParams(createTaskParams);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsTaskModalOpen(false);
+    setTaskToEdit(null);
+    setCreateTaskParams(null);
+  };
 
   return (
     <div className="flex h-full w-full max-w-screen flex-col justify-center gap-4">
-      <div className="flex justify-between">
-        <SortControls />
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="rounded p-1 hover:bg-gray-100"
-        >
-          <KanbanIcon icon={FaPlus} />
-        </button>
-      </div>
+      <SortControls />
       <DndContext sensors={sensors} onDragEnd={onCardDragEnd}>
         <div className="border-custom-dark grid h-full grid-cols-3 overflow-hidden rounded border">
           {columns.map((column) => (
@@ -43,15 +42,17 @@ const KanbanBoard = () => {
               key={`column-${column.id}`}
               column={column}
               onEditTask={handleEditTask}
+              onCreateTask={handleCreateTask}
             />
           ))}
         </div>
       </DndContext>
       <TaskModal
-        key={editingTask ? editingTask.id : 'create'}
-        isOpen={isCreateModalOpen || !!editingTask}
+        key={taskToEdit ? taskToEdit.id : 'create'}
+        isOpen={isTaskModalOpen}
         onClose={handleCloseModal}
-        taskToEdit={editingTask}
+        taskToEdit={taskToEdit}
+        createTaskParams={createTaskParams}
       />
     </div>
   );

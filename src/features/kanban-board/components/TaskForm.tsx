@@ -63,16 +63,17 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
             name="title"
             required
             defaultValue={state.title || ''}
-            className="border-custom-medium rounded border px-2 py-1"
+            className="border-custom-medium rounded border bg-white px-2 py-1"
           />
         </div>
         <div className="flex flex-col gap-1">
           <label className="font-semibold">Beschreibung</label>
           <textarea
             required
+            rows={4}
             name="description"
             defaultValue={state.description || ''}
-            className="border-custom-medium rounded border px-2 py-1"
+            className="border-custom-medium rounded border bg-white px-2 py-1"
           />
         </div>
       </div>
@@ -105,8 +106,8 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-xs opacity-70">{`Erstellt: ${state.creationDate}`}</span>
-        <span className="text-xs opacity-70">{`Zuletzt geändert: ${state.lastModifiedDate}`}</span>
+        <span className="text-xs">{`Erstellt: ${state.creationDate}`}</span>
+        <span className="text-xs">{`Zuletzt geändert: ${state.lastModifiedDate}`}</span>
       </div>
       <div className="flex justify-end">
         <button

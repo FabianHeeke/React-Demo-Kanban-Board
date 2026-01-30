@@ -32,13 +32,12 @@ const TaskModal = ({
       isOpen={isOpen}
       onClose={onClose}
       title={taskToEdit ? 'Edit Task' : 'Create New Task'}
+      backgroundColorClass="bg-custom-light"
     >
-      <div>
-        <TaskForm
-          onSubmit={handleSave}
-          taskParams={taskToEdit || createTaskParams}
-        />
-      </div>
+      <TaskForm
+        onSubmit={handleSave}
+        taskParams={taskToEdit || createTaskParams}
+      />
     </Modal>
   );
 };

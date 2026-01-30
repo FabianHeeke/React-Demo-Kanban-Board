@@ -3,6 +3,7 @@ import Task from '../interfaces/Task.interface';
 import KanbanSelect from '@/components/ui/KanbanSelect';
 import useBoardStore from '../hooks/useBoardStore';
 import KanbanButton from '@/components/ui/KanbanButton';
+import { useTaskUtils } from '../hooks/useTaskUtils';
 
 interface TaskFormProps {
   onSubmit: (updatedTask: Task) => void;
@@ -10,16 +11,7 @@ interface TaskFormProps {
 }
 
 const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
-  const date = new Date();
-  const defautTaskData: Task = {
-    id: date.getTime(),
-    title: '',
-    description: '',
-    columnId: 1,
-    priority: 2,
-    creationDate: date.toISOString(),
-    lastModifiedDate: date.toISOString(),
-  };
+  const { createTask } = useTaskUtils();
 
   async function handleFormSubmit(
     prevState: Task,
@@ -35,19 +27,19 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
     return updatedTask;
   }
 
-  const [state, formAction, isPending] = useActionState(handleFormSubmit, {
-    ...defautTaskData,
-    ...taskParams,
-  });
-
-  const [isFormValid, setIsFormValid] = useState(
-    state.title.length > 0 && state.description.length > 0
-  );
-
   const handleFormChange = (event: FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
     setIsFormValid(form.checkValidity());
   };
+
+  const [state, formAction, isPending] = useActionState(
+    handleFormSubmit,
+    createTask(taskParams)
+  );
+
+  const [isFormValid, setIsFormValid] = useState(
+    state.title.length > 0 && state.description.length > 0
+  );
 
   return (
     <form
@@ -111,7 +103,11 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
       </div>
       <div className="flex justify-end gap-2">
         <KanbanButton variant="secondary">Abbrechen</KanbanButton>
-        <KanbanButton variant="primary" type="submit" isDisabled={!isFormValid}>
+        <KanbanButton
+          variant="primary"
+          type="submit"
+          isDisabled={!isFormValid || isPending}
+        >
           Speichern
         </KanbanButton>
       </div>

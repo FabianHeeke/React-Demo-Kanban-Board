@@ -2,15 +2,23 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
 import KanbanIcon from './KanbanIcon';
+import classNames from 'classnames';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
   children: React.ReactNode;
+  title?: string;
+  backgroundColorClass?: string;
 }
 
-const Modal = ({ isOpen, onClose, title = '', children }: ModalProps) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  children,
+  title = '',
+  backgroundColorClass = 'bg-white',
+}: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -27,18 +35,23 @@ const Modal = ({ isOpen, onClose, title = '', children }: ModalProps) => {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      className={classNames(
+        'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm'
+      )}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl"
+        className={classNames(
+          'w-full max-w-md rounded-lg p-6 shadow-xl',
+          `${backgroundColorClass ?? ''}`
+        )}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between">
+        <div className={classNames('mb-4 flex items-center justify-between')}>
           <h2 className="text-xl font-bold">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded p-1 hover:bg-gray-100"
+            className="cursor-pointer rounded p-1"
             aria-label="Close modal"
           >
             <KanbanIcon icon={IoClose} size={24} />

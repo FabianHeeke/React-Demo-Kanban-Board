@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
 import { TaskSortOptions } from '../types/TaskSortOptions.type';
+import tasksJson from '../../../../json/tasks.json';
+import columnsJson from '../../../../json/columns.json';
 
 interface BoardState {
   tasks: Task[];
@@ -18,41 +20,9 @@ interface BoardState {
   deleteTask: (deleteTaskId: number) => void;
 }
 
-const defaultTasks: Task[] = [
-  {
-    id: 101,
-    columnId: 1,
-    title: 'Design UI',
-    description: 'Create wireframes and mockups for the new feature.',
-    priority: 3,
-    creationDate: '2026-01-01T09:00:00Z',
-    lastModifiedDate: '2026-01-01T09:00:00Z',
-  },
-  {
-    id: 102,
-    columnId: 1,
-    title: 'Set up backend',
-    description: 'Initialize the backend project and database.',
-    priority: 1,
-    creationDate: '2026-01-02T10:00:00Z',
-    lastModifiedDate: '2026-01-02T10:00:00Z',
-  },
-  {
-    id: 103,
-    columnId: 3,
-    title: 'Write documentation',
-    description: 'Document the API endpoints and usage.',
-    priority: 2,
-    creationDate: '2026-01-03T11:00:00Z',
-    lastModifiedDate: '2026-01-03T11:00:00Z',
-  },
-];
+const defaultTasks: Task[] = tasksJson as Task[];
 
-const defaultColumns: Column[] = [
-  { id: 1, name: 'To do' },
-  { id: 2, name: 'In progress' },
-  { id: 3, name: 'Done' },
-];
+const defaultColumns: Column[] = columnsJson as Column[];
 
 const defaultTaskSortOptions: TaskSortOptions = {
   field: 'creationDate',

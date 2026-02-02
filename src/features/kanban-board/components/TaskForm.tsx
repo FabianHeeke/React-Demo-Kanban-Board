@@ -1,6 +1,6 @@
 import { FormEvent, useActionState, useState } from 'react';
 import Task from '../interfaces/Task.interface';
-import KanbanSelect from '@/components/ui/KanbanSelect';
+import KanbanCheckboxSelect from '@/components/ui/KanbanCheckboxSelect';
 import useBoardStore from '../hooks/useBoardStore';
 import KanbanButton from '@/components/ui/KanbanButton';
 import { useTaskUtils } from '../hooks/useTaskUtils';
@@ -73,9 +73,9 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
       </div>
       {/* Priority + columnId */}
       <div className="flex flex-col gap-4">
-        <div className="flex gap-1">
+        <div className="flex flex-col gap-3">
           <label className="font-semibold">Priorität</label>
-          <KanbanSelect
+          <KanbanCheckboxSelect
             options={[
               { displayName: 'Hoch', value: 3 },
               { displayName: 'Mittel', value: 2 },
@@ -86,9 +86,9 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
             }
           />
         </div>
-        <div className="flex gap-1">
+        <div className="flex flex-col gap-3">
           <label className="font-semibold">Spalte</label>
-          <KanbanSelect
+          <KanbanCheckboxSelect
             options={useBoardStore((state) => state.columns).map((column) => ({
               displayName: column.name,
               value: column.id,

@@ -84,6 +84,7 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
             onValueSelect={(newPriority: Task['priority']) =>
               (state.priority = newPriority)
             }
+            preSelectedValue={state.priority}
           />
         </div>
         <div className="flex flex-col gap-3">
@@ -96,6 +97,7 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
             onValueSelect={(newColumnId: Task['priority']) =>
               (state.columnId = newColumnId)
             }
+            preSelectedValue={state.columnId}
           />
         </div>
       </div>

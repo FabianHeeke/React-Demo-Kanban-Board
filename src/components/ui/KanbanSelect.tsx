@@ -3,6 +3,7 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import KanbanIcon from './KanbanIcon';
 import { FaCheck } from 'react-icons/fa6';
+import classNames from 'classnames';
 
 interface KanbanSelectProps {
   options: KanbanSelectOption[];
@@ -31,58 +32,70 @@ const KanbanSelect = ({
   };
 
   return (
-    <div className="relative">
+    <>
       <div
-        onClick={() => setIsSelectDropdownVisible(!isSelectDropdownVisible)}
-        className={classnames(
-          'hover:border-custom-dark absolute top-0 z-20 max-w-fit cursor-pointer rounded border px-2 py-1 transition-colors hover:bg-white',
+        className={classNames(
+          'invisible fixed inset-0 z-50 flex items-center justify-center',
           {
-            'border-custom-dark bg-white': isSelectDropdownVisible,
-            'border-transparent': !isSelectDropdownVisible,
+            visible: isSelectDropdownVisible,
           }
         )}
-      >
-        <div className="flex items-center gap-1">
-          <p className="hover:underline">{selectedOption.displayName}</p>
-        </div>
+        onClick={() => setIsSelectDropdownVisible(false)}
+      ></div>
+
+      <div className="relative z-60">
         <div
+          onClick={() => setIsSelectDropdownVisible(!isSelectDropdownVisible)}
           className={classnames(
-            'grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows] duration-200 ease-in-out',
+            'hover:border-custom-dark absolute top-0 z-20 max-w-fit cursor-pointer rounded border px-2 py-1 transition-colors hover:bg-white',
             {
-              'grid-rows-[1fr] opacity-100': isSelectDropdownVisible,
+              'border-custom-dark bg-white': isSelectDropdownVisible,
+              'border-transparent': !isSelectDropdownVisible,
             }
           )}
         >
+          <div className="flex items-center gap-1">
+            <p className="hover:underline">{selectedOption.displayName}</p>
+          </div>
           <div
             className={classnames(
-              'border-custom-dark flex w-max min-w-full flex-col gap-1 overflow-hidden border-t',
+              'grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows] duration-200 ease-in-out',
               {
-                'mt-2 pt-2': isSelectDropdownVisible,
+                'grid-rows-[1fr] opacity-100': isSelectDropdownVisible,
               }
             )}
           >
-            {options.map((option, index) => (
-              <div
-                key={`sort-selct-option-${index}-${option.value} `}
-                className="group flex items-center gap-2"
-                onClick={() => handleValueSelect(option)}
-              >
-                <p
-                  className={classnames('group-hover:underline', {
-                    hidden: !isSelectDropdownVisible,
-                  })}
+            <div
+              className={classnames(
+                'border-custom-dark flex w-max min-w-full flex-col gap-1 overflow-hidden border-t',
+                {
+                  'mt-2 pt-2': isSelectDropdownVisible,
+                }
+              )}
+            >
+              {options.map((option, index) => (
+                <div
+                  key={`sort-selct-option-${index}-${option.value} `}
+                  className="group flex items-center gap-2"
+                  onClick={() => handleValueSelect(option)}
                 >
-                  {option.displayName}
-                </p>
-                {option.displayName === selectedOption.displayName ? (
-                  <KanbanIcon icon={FaCheck} size={15} />
-                ) : null}
-              </div>
-            ))}
+                  <p
+                    className={classnames('group-hover:underline', {
+                      hidden: !isSelectDropdownVisible,
+                    })}
+                  >
+                    {option.displayName}
+                  </p>
+                  {option.displayName === selectedOption.displayName ? (
+                    <KanbanIcon icon={FaCheck} size={15} />
+                  ) : null}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

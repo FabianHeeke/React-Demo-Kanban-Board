@@ -37,7 +37,7 @@ const KanbanBoard = () => {
         </button>
       </div>
       <DndContext sensors={sensors} onDragEnd={onCardDragEnd}>
-        <div className="border-custom-dark grid h-full grid-cols-3 overflow-hidden rounded-md border">
+        <div className="border-custom-dark grid h-full grid-cols-3 overflow-hidden rounded border">
           {columns.map((column) => (
             <BoardColumn
               key={`column-${column.id}`}

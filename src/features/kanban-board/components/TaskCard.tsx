@@ -24,7 +24,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
       style={cardDragTransformation}
       {...listeners}
       {...attributes}
-      className="group relative touch-none"
+      className="relative touch-none"
       onClick={() => onEdit(task)}
     >
       <div
@@ -40,7 +40,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
             ))}
           </p>
         </div>
-        <h3 className="">{task.title}</h3>
+        <h3 className="my-1">{task.title}</h3>
         <p className="line-clamp-3 min-h-[3lh] text-xs">{task.description}</p>
       </div>
     </div>

@@ -14,7 +14,6 @@ const KanbanBoard = () => {
   const columns = useBoardStore((state) => state.columns);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-
   const { sensors, onCardDragEnd } = useTaskCardDrag();
 
   const handleEditTask = useCallback((task: Task) => {

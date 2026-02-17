@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import Task from '../interfaces/Task.interface';
 import classnames from 'classnames';
 import { useDraggable } from '@dnd-kit/core';
@@ -12,15 +11,11 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
   });
-  const cardDragTransformation = useMemo(
-    () =>
-      transform
-        ? {
-            transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-          }
-        : undefined,
-    [transform]
-  );
+  const cardDragTransformation = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
 
   return (
     <div

@@ -30,6 +30,7 @@ const KanbanSelect = ({
 
   return (
     <div
+      onClick={() => setIsSelectDropdownVisible(!isSelectDropdownVisible)}
       className={classnames(
         'hover:border-custom-dark absolute top-0 z-20 max-w-fit cursor-pointer rounded border px-2 py-1 transition-colors hover:bg-white',
         {
@@ -40,12 +41,7 @@ const KanbanSelect = ({
     >
       <div className="relative flex items-center gap-1">
         {prefixIcon && <KanbanIcon icon={prefixIcon} size={15} />}
-        <p
-          className="hover:underline"
-          onClick={() => setIsSelectDropdownVisible(!isSelectDropdownVisible)}
-        >
-          {selectedOption.displayName}
-        </p>
+        <p className="hover:underline">{selectedOption.displayName}</p>
       </div>
       <div
         className={classnames(
@@ -55,11 +51,15 @@ const KanbanSelect = ({
           }
         )}
       >
-        <div className="mt-1 flex w-max flex-col gap-1 overflow-hidden">
+        <div className="mt-1 flex w-max min-w-full flex-col gap-1 overflow-hidden">
           {options
             .filter((option) => option !== selectedOption)
             .map((option, index) => (
-              <div className="flex gap-1">
+              <div
+                key={`sort-selct-option-${index}-${option.value} `}
+                className="group flex gap-1"
+                onClick={() => handleValueSelect(option)}
+              >
                 {prefixIcon && (
                   <KanbanIcon
                     icon={prefixIcon}
@@ -68,9 +68,7 @@ const KanbanSelect = ({
                   />
                 )}
                 <p
-                  key={`sort-selct-option-${index}-${option.value} `}
-                  onClick={() => handleValueSelect(option)}
-                  className={classnames('hover:underline', {
+                  className={classnames('group-hover:underline', {
                     hidden: !isSelectDropdownVisible,
                   })}
                 >

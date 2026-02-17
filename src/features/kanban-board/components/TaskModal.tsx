@@ -69,13 +69,14 @@ const TaskModal = ({
     } else {
       const newTask: Task = {
         id: Date.now(),
+        columnId: defaultColumnId,
         title,
         description,
         priority,
         creationDate: now,
         lastModifiedDate: now,
       };
-      addTask(newTask, defaultColumnId);
+      addTask(newTask);
     }
     onClose();
   };

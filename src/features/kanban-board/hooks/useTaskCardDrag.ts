@@ -1,8 +1,27 @@
 import { DragEndEvent } from '@dnd-kit/core';
 import useBoardStore from './useBoardStore';
 import { TaskDragData } from '../types/TaskDragData.type';
+import {
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 
 const useTaskCardDrag = () => {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    })
+  );
+
   const { moveTaskToColumn } = useBoardStore();
   const onCardDragEnd = (event: DragEndEvent) => {
     const { active: draggedCardElement, over: newParentColumn } = event;
@@ -14,20 +33,15 @@ const useTaskCardDrag = () => {
       !newParentColumn ||
       !newParentColumn.id ||
       !dragData ||
-      !dragData.task ||
-      !dragData.parentColumnId
+      !dragData.task
     ) {
       return;
     }
 
-    moveTaskToColumn({
-      draggedTask: dragData.task,
-      sourceColumnId: dragData.parentColumnId,
-      targetColumnId: parseInt(newParentColumn.id as string, 10),
-    });
+    moveTaskToColumn(dragData.task, parseInt(newParentColumn.id as string, 10));
   };
 
-  return { onCardDragEnd };
+  return { sensors, onCardDragEnd };
 };
 
 export default useTaskCardDrag;

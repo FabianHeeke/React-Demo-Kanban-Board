@@ -3,6 +3,7 @@ import { TaskCard } from './TaskCard';
 import classnames from 'classnames';
 import { useDroppable } from '@dnd-kit/core';
 import Task from '../interfaces/Task.interface';
+import useColumnTasks from '../hooks/useColumnTasks';
 
 interface BoardColumnProps {
   column: Column;
@@ -10,29 +11,11 @@ interface BoardColumnProps {
 }
 
 export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
+  const { sortedTasksForColumn: tasks } = useColumnTasks(column.id);
+
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,
   });
-
-  const _renderTasks = () => {
-    if (column.tasks.length === 0) {
-      return <div className="text-sm text-gray-500 italic">No tasks</div>;
-    }
-
-    return (
-      <>
-        {column.tasks.map((task, index) => (
-          // Task Card is draggable
-          <TaskCard
-            key={`task-${column.id}-${index}`}
-            task={task}
-            columnId={column.id}
-            onEdit={onEditTask}
-          />
-        ))}
-      </>
-    );
-  };
 
   return (
     <div
@@ -43,7 +26,22 @@ export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
       )}
     >
       <h3 className="mb-4 font-bold">{column.name}</h3>
-      <div className="flex flex-col gap-2">{_renderTasks()}</div>
+      <div className="flex flex-col gap-2">
+        {tasks.length === 0 ? (
+          <div className="text-sm text-gray-500 italic">No tasks</div>
+        ) : (
+          <>
+            {tasks.map((task, index) => (
+              // Task Card is draggable
+              <TaskCard
+                key={`task-${column.id}-${index}`}
+                task={task}
+                onEdit={onEditTask}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };

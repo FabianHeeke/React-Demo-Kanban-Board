@@ -7,7 +7,6 @@ interface HeaderProps {
 }
 
 const Header = ({ maxContentWidthClassName }: HeaderProps) => {
-  console.log(maxContentWidthClassName);
   return (
     <div className="h-20 w-full bg-gray-100">
       <div

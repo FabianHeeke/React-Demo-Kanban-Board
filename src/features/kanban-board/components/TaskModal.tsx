@@ -10,6 +10,7 @@ interface TaskModalProps {
   onClose: () => void;
   taskToEdit?: Task | null;
   defaultColumnId?: number;
+  createTaskParams?: Partial<Task> | null;
 }
 
 const TaskModal = ({
@@ -17,6 +18,7 @@ const TaskModal = ({
   onClose,
   taskToEdit,
   defaultColumnId = 1,
+  createTaskParams = null,
 }: TaskModalProps) => {
   const { addTask, updateTask, deleteTask } = useBoardStore();
   // Initialize state based on taskToEdit

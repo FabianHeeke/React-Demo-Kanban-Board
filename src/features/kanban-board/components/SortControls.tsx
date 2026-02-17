@@ -47,6 +47,7 @@ const SortControls = () => {
           { displayName: 'Priorität', value: 'priority' },
         ]}
         onValueSelect={handleSortOptionSelection}
+        preSelectedValue={sortTaskOptions.field}
       />
     </div>
   );

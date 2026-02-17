@@ -7,12 +7,21 @@ import { FaCheck } from 'react-icons/fa6';
 interface KanbanSelectProps {
   options: KanbanSelectOption[];
   onValueSelect: (selectedValue: KanbanSelectOption['value']) => void;
+  preSelectedValue?: string | number;
 }
 
-const KanbanSelect = ({ options, onValueSelect }: KanbanSelectProps) => {
+const KanbanSelect = ({
+  options,
+  onValueSelect,
+  preSelectedValue = undefined,
+}: KanbanSelectProps) => {
+  const preSelectedOptionByValue = preSelectedValue
+    ? options.find((option) => option.value === preSelectedValue)
+    : null;
   const [selectedOption, setSelectedOption] = useState<KanbanSelectOption>(
-    options[0]
+    preSelectedOptionByValue ?? options[0]
   );
+
   const [isSelectDropdownVisible, setIsSelectDropdownVisible] = useState(false);
 
   const handleValueSelect = (selectedOption: KanbanSelectOption) => {

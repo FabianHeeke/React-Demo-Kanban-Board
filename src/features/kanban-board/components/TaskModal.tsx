@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Modal from '@/components/ui/Modal';
 import Task from '../interfaces/Task.interface';
 import useBoardStore from '../hooks/useBoardStore';
+import { FaTrash } from 'react-icons/fa';
+import KanbanIcon from '@/components/ui/KanbanIcon';
 
 interface TaskModalProps {
   isOpen: boolean;
@@ -16,7 +18,7 @@ const TaskModal = ({
   taskToEdit,
   defaultColumnId = 1,
 }: TaskModalProps) => {
-  const { addTask, updateTask } = useBoardStore();
+  const { addTask, updateTask, deleteTask } = useBoardStore();
   // Initialize state based on taskToEdit
   const [title, setTitle] = useState(taskToEdit?.title || '');
   const [description, setDescription] = useState(taskToEdit?.description || '');
@@ -35,6 +37,14 @@ const TaskModal = ({
         onClose();
       }
     } else {
+      onClose();
+    }
+  };
+
+  const handleDelete = (event: React.MouseEvent, taskToDelete: Task) => {
+    event.stopPropagation();
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      deleteTask(taskToDelete.id);
       onClose();
     }
   };
@@ -131,19 +141,33 @@ const TaskModal = ({
           </div>
         )}
 
-        <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={handleClose}
-            className="rounded px-4 py-2 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSave}
-            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-          >
-            Save
-          </button>
+        <div className="mt-4 flex justify-between">
+          <div className="flex items-center">
+            {taskToEdit && (
+              <button
+                onClick={(event) => handleDelete(event, taskToEdit as Task)}
+                className="cursor-pointer rounded bg-white/50 p-2 transition-colors hover:bg-gray-200"
+                title="Delete task"
+              >
+                <KanbanIcon icon={FaTrash} size={18} color={'red'} />
+              </button>
+            )}
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              onClick={handleClose}
+              className="cursor-pointer rounded px-4 py-2 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSave}
+              className="cursor-pointer rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </Modal>

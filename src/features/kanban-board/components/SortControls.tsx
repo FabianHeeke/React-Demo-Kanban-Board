@@ -1,7 +1,8 @@
-import { ChangeEvent } from 'react';
 import useBoardStore from '../hooks/useBoardStore';
-import { PiSortAscending, PiSortDescending } from 'react-icons/pi';
 import KanbanIcon from '@/components/ui/KanbanIcon';
+import { BsSortNumericDown, BsSortNumericDownAlt } from 'react-icons/bs';
+import KanbanSelect from '@/components/ui/KanbanSelect';
+import { TaskSortOptions } from '../types/TaskSortOptions.type';
 
 const SortControls = () => {
   const sortTaskOptions = useBoardStore((state) => state.sortTaskOptions);
@@ -9,13 +10,14 @@ const SortControls = () => {
     (state) => state.updateSortTaskOptions
   );
 
-  const handleSortFieldChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleSortOptionSelection = (
+    selectedSortOption: TaskSortOptions['field']
+  ) => {
     updateSortTaskOptions({
       ...sortTaskOptions,
-      field: event.target.value as 'creationDate' | 'priority',
+      field: selectedSortOption,
     });
   };
-
   const handleSortDirectionToggle = () => {
     updateSortTaskOptions({
       ...sortTaskOptions,
@@ -24,29 +26,28 @@ const SortControls = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <select
-        value={sortTaskOptions.field}
-        onChange={handleSortFieldChange}
-        className="cursor-pointer rounded border border-black bg-transparent p-2 text-sm outline-none"
-      >
-        <option value="creationDate">Creation Date</option>
-        <option value="priority">Priority</option>
-      </select>
+    <div className="flex">
       <button
         onClick={handleSortDirectionToggle}
-        className="flex cursor-pointer items-center justify-center rounded p-1 hover:bg-gray-100"
+        className="hover:border-custom-dark flex cursor-pointer items-center justify-center rounded border border-transparent p-1 hover:bg-white"
         title={`Switch to ${sortTaskOptions.direction === 'ASC' ? 'Descending' : 'Ascending'}`}
       >
         <KanbanIcon
           icon={
             sortTaskOptions.direction === 'ASC'
-              ? PiSortAscending
-              : PiSortDescending
+              ? BsSortNumericDown
+              : BsSortNumericDownAlt
           }
           size={20}
         />
       </button>
+      <KanbanSelect
+        options={[
+          { displayName: 'Erstellungsdatum', value: 'creationDate' },
+          { displayName: 'Priorität', value: 'priority' },
+        ]}
+        onValueSelect={handleSortOptionSelection}
+      />
     </div>
   );
 };

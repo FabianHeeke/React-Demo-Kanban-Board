@@ -43,7 +43,11 @@ const KanbanSelect = ({
         onClick={() => setIsSelectDropdownVisible(false)}
       ></div>
 
-      <div className="relative z-60">
+      <div
+        className={classNames('relative', {
+          'z-60': isSelectDropdownVisible,
+        })}
+      >
         <div
           onClick={() => setIsSelectDropdownVisible(!isSelectDropdownVisible)}
           className={classnames(

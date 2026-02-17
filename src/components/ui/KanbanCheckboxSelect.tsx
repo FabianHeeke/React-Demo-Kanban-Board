@@ -6,15 +6,19 @@ import classNames from 'classnames';
 interface KanbanCheckboxSelectProps {
   options: KanbanSelectOption[];
   onValueSelect: (selectedValue: KanbanSelectOption['value']) => void;
-  preSelectedValue?: KanbanSelectOption;
+  preSelectedValue?: string | number;
 }
 
 const KanbanCheckboxSelect = ({
   options,
   onValueSelect,
+  preSelectedValue = undefined,
 }: KanbanCheckboxSelectProps) => {
+  const preSelectedOptionByValue = preSelectedValue
+    ? options.find((option) => option.value === preSelectedValue)
+    : null;
   const [selectedOption, setSelectedOption] = useState<KanbanSelectOption>(
-    options[0]
+    preSelectedOptionByValue ?? options[0]
   );
 
   const handleValueSelect = (selectedOption: KanbanSelectOption) => {

@@ -3,7 +3,7 @@ import useBoardStore from './useBoardStore';
 import Task from '../interfaces/Task.interface';
 import { useCallback } from 'react';
 
-const useColumnTasks = (columnId: number): Task[] => {
+const useSortedColumnTasks = (columnId: number): Task[] => {
   const selector = useCallback(
     (state: ReturnType<typeof useBoardStore.getState>) => {
       const tasksInColumn = state.tasks.filter(
@@ -12,13 +12,13 @@ const useColumnTasks = (columnId: number): Task[] => {
       const { field, direction } = state.sortTaskOptions;
       return [...tasksInColumn].sort((a, b) => {
         if (field === 'creationDate') {
-          return direction === 'DESC'
+          return direction === 'ASC'
             ? a.creationDate.localeCompare(b.creationDate)
             : b.creationDate.localeCompare(a.creationDate);
         } else {
           const valueA = Number(a[field]);
           const valueB = Number(b[field]);
-          return direction === 'DESC' ? valueA - valueB : valueB - valueA;
+          return direction === 'ASC' ? valueA - valueB : valueB - valueA;
         }
       });
     },
@@ -27,4 +27,4 @@ const useColumnTasks = (columnId: number): Task[] => {
   return useBoardStore(useShallow(selector));
 };
 
-export default useColumnTasks;
+export default useSortedColumnTasks;

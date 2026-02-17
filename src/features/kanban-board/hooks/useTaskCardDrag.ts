@@ -1,6 +1,5 @@
 import { DragEndEvent } from '@dnd-kit/core';
 import useBoardStore from './useBoardStore';
-import { TaskDragData } from '../types/TaskDragData.type';
 import {
   PointerSensor,
   TouchSensor,
@@ -9,6 +8,7 @@ import {
 } from '@dnd-kit/core';
 
 const useTaskCardDrag = () => {
+  const { moveTaskToColumn } = useBoardStore();
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -22,23 +22,17 @@ const useTaskCardDrag = () => {
     })
   );
 
-  const { moveTaskToColumn } = useBoardStore();
   const onCardDragEnd = (event: DragEndEvent) => {
     const { active: draggedCardElement, over: newParentColumn } = event;
 
-    // draggedCardElement.data will always be of type TaskDragData here but eslint can't know that (so we force cast over unknown)
-    const dragData = draggedCardElement.data.current as unknown as TaskDragData;
-
-    if (
-      !newParentColumn ||
-      !newParentColumn.id ||
-      !dragData ||
-      !dragData.task
-    ) {
+    if (!draggedCardElement || !newParentColumn) {
       return;
     }
 
-    moveTaskToColumn(dragData.task, parseInt(newParentColumn.id as string, 10));
+    moveTaskToColumn(
+      parseInt(draggedCardElement.id as string, 10),
+      parseInt(newParentColumn.id as string, 10)
+    );
   };
 
   return { sensors, onCardDragEnd };

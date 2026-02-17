@@ -4,7 +4,10 @@ import { PiSortAscending, PiSortDescending } from 'react-icons/pi';
 import KanbanIcon from '@/components/ui/KanbanIcon';
 
 const SortControls = () => {
-  const { sortTaskOptions, updateSortTaskOptions } = useBoardStore();
+  const sortTaskOptions = useBoardStore((state) => state.sortTaskOptions);
+  const updateSortTaskOptions = useBoardStore(
+    (state) => state.updateSortTaskOptions
+  );
 
   const handleSortFieldChange = (event: ChangeEvent<HTMLSelectElement>) => {
     updateSortTaskOptions({

@@ -13,6 +13,7 @@ type MoveTaskToColumnProps = {
 interface BoardState {
   columns: Column[];
   sortTaskOptions: TaskSortOptions;
+  updateSortTaskOptions: (newSortOptions: TaskSortOptions) => void;
   moveTaskToColumn: ({}: MoveTaskToColumnProps) => void;
 }
 
@@ -43,7 +44,7 @@ const defaultTasks: Task[] = [
   },
 ];
 
-const columns: Column[] = [
+const defaultColumns: Column[] = [
   { id: 1, name: 'Todo', tasks: [defaultTasks[0], defaultTasks[1]] },
   { id: 2, name: 'In progress', tasks: [] },
   { id: 3, name: 'Done', tasks: [defaultTasks[2]] },
@@ -57,8 +58,36 @@ const defaultTaskSortOptions: TaskSortOptions = {
 const useBoardStore = create<BoardState>()(
   persist(
     (set) => ({
-      columns: columns,
+      columns: defaultColumns,
       sortTaskOptions: defaultTaskSortOptions,
+      updateSortTaskOptions: (newSortOptions: TaskSortOptions) => {
+        set((state) => {
+          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation
+
+          const columsWithSortedTasks = columns.map((column) =>
+            column.tasks.sort((taskA, taskB) => {
+              if (
+                newSortOptions.direction !== 'ASC' &&
+                newSortOptions.direction !== 'DESC'
+              ) {
+                throw new Error(
+                  `Invalid sort directon for tasks provided. Was ${newSortOptions.direction}, but should be "ASC" or "DESC"`
+                );
+              }
+
+              const fieldName = newSortOptions.field;
+              return newSortOptions.direction === 'ASC'
+                ? +taskA[fieldName] - +taskB[fieldName]
+                : +taskB[fieldName] - +taskA[fieldName];
+            })
+          );
+
+          return {
+            colums: columsWithSortedTasks,
+            sortTaskOptions: newSortOptions,
+          };
+        });
+      },
       moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
         set((state) => {
           const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation

@@ -1,31 +1,30 @@
 import { useShallow } from 'zustand/react/shallow';
 import useBoardStore from './useBoardStore';
 import Task from '../interfaces/Task.interface';
+import { useCallback } from 'react';
 
-const useColumnTasks = (columnId: number): Record<string, Task[]> => {
-  const sortedTasksForColumn = useBoardStore(
-    useShallow((state) => {
+const useColumnTasks = (columnId: number): Task[] => {
+  const selector = useCallback(
+    (state: ReturnType<typeof useBoardStore.getState>) => {
       const tasksInColumn = state.tasks.filter(
         (task) => task.columnId === columnId
       );
-
       const { field, direction } = state.sortTaskOptions;
       return [...tasksInColumn].sort((a, b) => {
-        let valueA: number;
-        let valueB: number;
         if (field === 'creationDate') {
-          valueA = new Date(a.creationDate).getTime();
-          valueB = new Date(b.creationDate).getTime();
+          return direction === 'ASC'
+            ? a.creationDate.localeCompare(b.creationDate)
+            : b.creationDate.localeCompare(a.creationDate);
         } else {
-          valueA = Number(a[field]);
-          valueB = Number(b[field]);
+          const valueA = Number(a[field]);
+          const valueB = Number(b[field]);
+          return direction === 'ASC' ? valueA - valueB : valueB - valueA;
         }
-        return direction === 'ASC' ? valueA - valueB : valueB - valueA;
       });
-    })
+    },
+    [columnId]
   );
-
-  return { sortedTasksForColumn };
+  return useBoardStore(useShallow(selector));
 };
 
 export default useColumnTasks;

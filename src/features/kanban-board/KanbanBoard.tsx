@@ -3,9 +3,9 @@ import { BoardColumn } from './components/BoardColumn';
 import useTaskCardDrag from './hooks/useTaskCardDrag';
 import useBoardStore from './hooks/useBoardStore';
 import { DndContext } from '@dnd-kit/core';
-import { PiSortAscending } from 'react-icons/pi';
 import { FaPlus } from 'react-icons/fa6';
 import KanbanIcon from '@/components/ui/KanbanIcon';
+import SortControls from './components/SortControls';
 
 const KanbanBoard = () => {
   const { columns } = useBoardStore();
@@ -15,7 +15,7 @@ const KanbanBoard = () => {
   return (
     <div className="mt-8 flex max-w-full flex-col gap-4">
       <div className="flex justify-between px-2">
-        <KanbanIcon icon={PiSortAscending} />
+        <SortControls />
         <KanbanIcon icon={FaPlus} />
       </div>
       <DndContext onDragEnd={onCardDragEnd}>

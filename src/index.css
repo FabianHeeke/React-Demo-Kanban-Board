@@ -9,3 +9,12 @@
   --color-custom-off-white: #f2f2f2;
   --color-custom-white: #ffffff;
 }
+
+@layer base {
+  h1 {
+    font-size: var(--text-2xl);
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+}

@@ -10,19 +10,16 @@ interface HeaderProps {
 
 const Header = ({ maxContentWidthClassName }: HeaderProps) => {
   return (
-    <div className="h-20 w-full bg-gray-100">
+    <div className="bg-custom-dark grid h-20 w-full grid-cols-[1fr_auto_1fr]">
       <div
         className={classnames(
-          'mx-auto flex h-full items-center justify-between',
+          'flex h-full items-center',
           maxContentWidthClassName
         )}
       >
-        <KanbanButton>
-          <span>Projekt auf GitHub</span>
-          <KanbanIcon icon={FaGithub} size={18} />
-        </KanbanButton>
-        <KanbanIcon icon={IoIosSettings} />
+        <p className="text-custom-off-white">{'Das Projekt auf GitHub >'}</p>
       </div>
+      <h1 className="text-custom-off-white flex items-center">Kanban-Board</h1>
     </div>
   );
 };

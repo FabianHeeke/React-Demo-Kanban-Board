@@ -24,17 +24,6 @@ const TaskModal = ({
     taskToEdit?.priority || 1
   );
   const [isDirty, setIsDirty] = useState(false);
-  const [lastInitialTask, setLastInitialTask] = useState<
-    Task | null | undefined
-  >(undefined);
-
-  if (isOpen && taskToEdit !== lastInitialTask) {
-    setLastInitialTask(taskToEdit);
-    setTitle(taskToEdit?.title || '');
-    setDescription(taskToEdit?.description || '');
-    setPriority(taskToEdit?.priority || 1);
-    setIsDirty(false);
-  }
 
   const handleClose = () => {
     if (isDirty) {

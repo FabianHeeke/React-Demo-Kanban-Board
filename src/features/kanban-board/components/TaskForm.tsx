@@ -4,6 +4,7 @@ import KanbanSelect from '@/components/ui/KanbanSelect';
 import useBoardStore from '../hooks/useBoardStore';
 import KanbanButton from '@/components/ui/KanbanButton';
 import { useTaskUtils } from '../hooks/useTaskUtils';
+import { useDateFormatter } from '../hooks/useDateFormatter';
 
 interface TaskFormProps {
   onSubmit: (updatedTask: Task) => void;
@@ -12,6 +13,7 @@ interface TaskFormProps {
 
 const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
   const { createTask } = useTaskUtils();
+  const { formatDate } = useDateFormatter(true);
 
   async function handleFormSubmit(
     prevState: Task,
@@ -98,8 +100,8 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-xs">{`Erstellt: ${state.creationDate}`}</span>
-        <span className="text-xs">{`Zuletzt geändert: ${state.lastModifiedDate}`}</span>
+        <span className="text-xs">{`Erstellt: ${formatDate(new Date(state.creationDate))}`}</span>
+        <span className="text-xs">{`Zuletzt geändert: ${formatDate(new Date(state.lastModifiedDate))}`}</span>
       </div>
       <div className="flex justify-end gap-2">
         <KanbanButton variant="secondary">Abbrechen</KanbanButton>

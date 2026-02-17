@@ -21,7 +21,7 @@ export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
     <div ref={setNodeRef} className={classnames('flex w-72 flex-col p-4')}>
       <div className="mb-6 flex items-center gap-2">
         <h2
-          className={classnames('text-custom-dark capitalize', {
+          className={classnames('text-custom-dark uppercase', {
             'font-bold underline': isOver,
           })}
         >

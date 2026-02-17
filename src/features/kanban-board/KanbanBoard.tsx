@@ -26,7 +26,7 @@ const KanbanBoard = () => {
   }, []);
 
   return (
-    <div className="flex h-full w-full flex-col justify-center gap-4">
+    <div className="flex h-full w-full max-w-screen flex-col justify-center gap-4">
       <div className="flex justify-between">
         <SortControls />
         <button
@@ -37,7 +37,7 @@ const KanbanBoard = () => {
         </button>
       </div>
       <DndContext sensors={sensors} onDragEnd={onCardDragEnd}>
-        <div className="border-custom-dark grid h-full grid-cols-3 rounded-md border">
+        <div className="border-custom-dark grid h-full grid-cols-3 overflow-hidden rounded-md border">
           {columns.map((column) => (
             <BoardColumn
               key={`column-${column.id}`}

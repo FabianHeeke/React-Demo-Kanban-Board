@@ -1,8 +1,8 @@
 import { FormEvent, useActionState, useState } from 'react';
 import Task from '../interfaces/Task.interface';
 import KanbanSelect from '@/components/ui/KanbanSelect';
-import classNames from 'classnames';
 import useBoardStore from '../hooks/useBoardStore';
+import KanbanButton from '@/components/ui/KanbanButton';
 
 interface TaskFormProps {
   onSubmit: (updatedTask: Task) => void;
@@ -109,14 +109,11 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
         <span className="text-xs">{`Erstellt: ${state.creationDate}`}</span>
         <span className="text-xs">{`Zuletzt geändert: ${state.lastModifiedDate}`}</span>
       </div>
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className={classNames({ 'bg-red-500': !isFormValid || isPending })}
-          disabled={!isFormValid || isPending}
-        >
-          {isPending ? 'Speichere...' : 'Speichern'}
-        </button>
+      <div className="flex justify-end gap-2">
+        <KanbanButton variant="secondary">Abbrechen</KanbanButton>
+        <KanbanButton variant="primary" type="submit" isDisabled={!isFormValid}>
+          Speichern
+        </KanbanButton>
       </div>
     </form>
   );

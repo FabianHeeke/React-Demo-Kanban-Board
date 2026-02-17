@@ -40,7 +40,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
             ))}
           </p>
         </div>
-        <h3 className="my-1">{task.title}</h3>
+        <h3 className="my-1 truncate">{task.title}</h3>
         <p className="line-clamp-3 min-h-[3lh] text-xs">{task.description}</p>
       </div>
     </div>

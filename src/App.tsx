@@ -6,12 +6,17 @@ function App() {
   const maxContentWidthClassName = 'max-w-4xl px-4';
 
   return (
-    <>
+    <div className="bg-custom-off-white grid min-h-screen min-w-screen grid-rows-[auto_1fr]">
       <Header maxContentWidthClassName={maxContentWidthClassName} />
-      <div className={classnames('relative mx-auto', maxContentWidthClassName)}>
+      <div
+        className={classnames(
+          'justify-self-center p-8',
+          maxContentWidthClassName
+        )}
+      >
         <KanbanBoard />
       </div>
-    </>
+    </div>
   );
 }
 

@@ -26,8 +26,8 @@ const KanbanBoard = () => {
   }, []);
 
   return (
-    <div className="mt-8 flex max-w-full flex-col gap-4">
-      <div className="flex justify-between px-2">
+    <div className="flex h-full w-full flex-col justify-center gap-4">
+      <div className="flex justify-between">
         <SortControls />
         <button
           onClick={() => setIsCreateModalOpen(true)}
@@ -37,7 +37,7 @@ const KanbanBoard = () => {
         </button>
       </div>
       <DndContext sensors={sensors} onDragEnd={onCardDragEnd}>
-        <div className="flex h-full max-h-screen min-h-[50vh] justify-center gap-4">
+        <div className="border-custom-dark grid h-full grid-cols-3 rounded-md border">
           {columns.map((column) => (
             <BoardColumn
               key={`column-${column.id}`}

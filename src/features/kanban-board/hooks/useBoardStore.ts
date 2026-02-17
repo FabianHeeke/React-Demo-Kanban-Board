@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
-import { TaskSortOptions } from '../types/TaskSortOptions';
+import { TaskSortOptions } from '../types/TaskSortOptions.type';
 
 type MoveTaskToColumnProps = {
   draggedTask: Task;

@@ -4,4 +4,8 @@
 
 @theme {
   --font-sans: 'Geist Mono', 'sans-serif';
+
+  --color-custom-dark: #393939;
+  --color-custom-off-white: #f2f2f2;
+  --color-custom-white: #ffffff;
 }

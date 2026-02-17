@@ -31,10 +31,10 @@ export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
           <div className="text-sm text-gray-500 italic">No tasks</div>
         ) : (
           <>
-            {tasks.map((task, index) => (
+            {tasks.map((task) => (
               // Task Card is draggable
               <TaskCard
-                key={`task-${column.id}-${index}`}
+                key={`task-${task.id}`}
                 task={task}
                 onEdit={onEditTask}
               />

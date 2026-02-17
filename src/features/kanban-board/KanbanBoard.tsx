@@ -39,9 +39,9 @@ const KanbanBoard = () => {
       </div>
       <DndContext sensors={sensors} onDragEnd={onCardDragEnd}>
         <div className="flex h-full max-h-screen min-h-[50vh] justify-center gap-4">
-          {columns.map((column, index) => (
+          {columns.map((column) => (
             <BoardColumn
-              key={index}
+              key={`column-${column.id}`}
               column={column}
               onEditTask={handleEditTask}
             />

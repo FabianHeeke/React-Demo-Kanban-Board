@@ -53,62 +53,70 @@ const TaskForm = ({ onSubmit, taskParams }: TaskFormProps) => {
     <form
       action={formAction}
       onChange={handleFormChange}
-      className="flex flex-col gap-4 rounded border p-4"
+      className="flex flex-col gap-8"
     >
-      <div className="flex flex-col gap-1">
-        <label className="font-semibold">Titel</label>
-        <input
-          name="title"
-          required
-          defaultValue={state.title || ''}
-          className="border-custom-dark rounded border px-2 py-1"
-        />
+      {/* Title + description */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <label className="font-semibold">Titel</label>
+          <input
+            name="title"
+            required
+            defaultValue={state.title || ''}
+            className="border-custom-medium rounded border px-2 py-1"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="font-semibold">Beschreibung</label>
+          <textarea
+            required
+            name="description"
+            defaultValue={state.description || ''}
+            className="border-custom-medium rounded border px-2 py-1"
+          />
+        </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <label className="font-semibold">Beschreibung</label>
-        <textarea
-          required
-          name="description"
-          defaultValue={state.description || ''}
-          className="border-custom-dark rounded border px-2 py-1"
-        />
+      {/* Priority + columnId */}
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-1">
+          <label className="font-semibold">Priorität</label>
+          <KanbanSelect
+            options={[
+              { displayName: 'Hoch', value: 3 },
+              { displayName: 'Mittel', value: 2 },
+              { displayName: 'Niedrig', value: 1 },
+            ]}
+            onValueSelect={(newPriority: Task['priority']) =>
+              (state.priority = newPriority)
+            }
+          />
+        </div>
+        <div className="flex gap-1">
+          <label className="font-semibold">Spalte</label>
+          <KanbanSelect
+            options={useBoardStore((state) => state.columns).map((column) => ({
+              displayName: column.name,
+              value: column.id,
+            }))}
+            onValueSelect={(newColumnId: Task['priority']) =>
+              (state.columnId = newColumnId)
+            }
+          />
+        </div>
       </div>
-      <div>
-        <label className="font-semibold">Priorität</label>
-        <KanbanSelect
-          options={[
-            { displayName: 'Hoch', value: 3 },
-            { displayName: 'Mittel', value: 2 },
-            { displayName: 'Niedrig', value: 1 },
-          ]}
-          onValueSelect={(newPriority: Task['priority']) =>
-            (state.priority = newPriority)
-          }
-        />
+      <div className="flex flex-col gap-2">
+        <span className="text-xs opacity-70">{`Erstellt: ${state.creationDate}`}</span>
+        <span className="text-xs opacity-70">{`Zuletzt geändert: ${state.lastModifiedDate}`}</span>
       </div>
-      <div>
-        <label className="font-semibold">Spalte</label>
-        <KanbanSelect
-          options={useBoardStore((state) => state.columns).map((column) => ({
-            displayName: column.name,
-            value: column.id,
-          }))}
-          onValueSelect={(newColumnId: Task['priority']) =>
-            (state.columnId = newColumnId)
-          }
-        />
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className={classNames({ 'bg-red-500': !isFormValid || isPending })}
+          disabled={!isFormValid || isPending}
+        >
+          {isPending ? 'Speichere...' : 'Speichern'}
+        </button>
       </div>
-      <button
-        type="submit"
-        className={classNames({ 'bg-red-500': !isFormValid || isPending })}
-        disabled={!isFormValid || isPending}
-      >
-        {isPending ? 'Speichere...' : 'Speichern'}
-      </button>
-      {/* Debug-Ansicht um zu sehen, was im State passiert */}
-      <pre className="bg-gray-100 p-2 text-xs">
-        Aktueller State: {JSON.stringify(state, null, 2)}
-      </pre>
     </form>
   );
 };

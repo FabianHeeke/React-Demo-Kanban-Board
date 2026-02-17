@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import Column from '../interfaces/Column.interface';
 import Task from '../interfaces/Task.interface';
 
@@ -19,24 +20,24 @@ const defaultTasks: Task[] = [
     title: 'Design UI',
     description: 'Create wireframes and mockups for the new feature.',
     priority: 1,
-    creationDate: new Date('2026-01-01T09:00:00Z'),
-    lastModifiedDate: new Date('2026-01-01T09:00:00Z'),
+    creationDate: '2026-01-01T09:00:00Z',
+    lastModifiedDate: '2026-01-01T09:00:00Z',
   },
   {
     id: 102,
     title: 'Set up backend',
     description: 'Initialize the backend project and database.',
     priority: 2,
-    creationDate: new Date('2026-01-02T10:00:00Z'),
-    lastModifiedDate: new Date('2026-01-02T10:00:00Z'),
+    creationDate: '2026-01-02T10:00:00Z',
+    lastModifiedDate: '2026-01-02T10:00:00Z',
   },
   {
     id: 103,
     title: 'Write documentation',
     description: 'Document the API endpoints and usage.',
     priority: 3,
-    creationDate: new Date('2026-01-03T11:00:00Z'),
-    lastModifiedDate: new Date('2026-01-03T11:00:00Z'),
+    creationDate: '2026-01-03T11:00:00Z',
+    lastModifiedDate: '2026-01-03T11:00:00Z',
   },
 ];
 
@@ -46,31 +47,38 @@ const columns: Column[] = [
   { id: 3, name: 'Done', tasks: [defaultTasks[2]] },
 ];
 
-const useBoardStore = create<BoardState>((set) => ({
-  columns: columns,
-  moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
-    set((state) => {
-      const columns = [...state.columns]; // shallow copy for mutatio
+const useBoardStore = create<BoardState>()(
+  persist(
+    (set) => ({
+      columns: columns,
+      moveTaskToColumn: ({ draggedTask, sourceColumnId, targetColumnId }) => {
+        set((state) => {
+          const columns = JSON.parse(JSON.stringify(state.columns)) as Column[]; // deep copy for mutation
 
-      const sourceColumn = columns.find(
-        (column) => column.id === sourceColumnId
-      );
-      const targetColumn = columns.find(
-        (column) => column.id === targetColumnId
-      );
+          const sourceColumn = columns.find(
+            (column) => column.id === sourceColumnId
+          );
+          const targetColumn = columns.find(
+            (column) => column.id === targetColumnId
+          );
 
-      if (!sourceColumn || !targetColumn) {
-        return state;
-      }
+          if (!sourceColumn || !targetColumn) {
+            return state;
+          }
 
-      sourceColumn.tasks = sourceColumn.tasks.filter(
-        (task) => task.id !== draggedTask.id
-      );
-      targetColumn.tasks.push(draggedTask);
+          sourceColumn.tasks = sourceColumn.tasks.filter(
+            (task) => task.id !== draggedTask.id
+          );
+          targetColumn.tasks.push(draggedTask);
 
-      return { columns };
-    });
-  },
-}));
+          return { columns };
+        });
+      },
+    }),
+    {
+      name: 'kanban-storage',
+    }
+  )
+);
 
 export default useBoardStore;

@@ -18,7 +18,7 @@ export const BoardColumn = ({ column, onEditTask }: BoardColumnProps) => {
   });
 
   return (
-    <div ref={setNodeRef} className={classnames('flex w-72 flex-col p-4')}>
+    <div ref={setNodeRef} className={classnames('flex flex-col p-4')}>
       <div className="mb-6 flex items-center gap-2">
         <h2
           className={classnames('text-custom-dark uppercase', {
